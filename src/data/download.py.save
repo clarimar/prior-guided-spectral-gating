@@ -1,0 +1,5 @@
+# Backup do antigo (por segurança)
+mv src/data/download.py src/data/download_old.py
+
+# Criar versão nova
+nano src/data/download.py

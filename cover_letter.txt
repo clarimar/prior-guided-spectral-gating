@@ -1,0 +1,31 @@
+Dear Editor,
+
+We submit for your consideration our manuscript entitled "Prior-Guided 
+Spectral Gating for Interpretable Deep Learning in Near-Infrared 
+Spectroscopy" for publication in Chemometrics and Intelligent Laboratory 
+Systems.
+
+This work addresses a critical gap in chemometric practice: enabling deep 
+learning adoption without sacrificing the interpretability that makes 
+traditional methods like PLS the gold standard. Our framework introduces 
+three technical innovations:
+
+1. Initialization from established chemometric importance measures 
+   (ANOVA, VIP, Random Forest)
+2. KL-divergence regularization maintaining statistical grounding
+3. Lightweight architecture appropriate for small-sample regimes (n=50-500)
+
+Validation on two benchmark NIR datasets (Tecator and Gasoline) demonstrates 
+competitive performance with PLS (R²=0.86-0.93 vs 0.92-0.94) while providing 
+explicit, chemically validated band importance maps. The top selected band 
+for Tecator (931nm) corresponds precisely to C-H absorption for fat content.
+
+We believe this work fits perfectly within the scope of Chemometrics and 
+Intelligent Laboratory Systems, offering a practical pathway for 
+chemometricians to leverage deep learning while maintaining interpretability.
+
+All authors have approved the manuscript and agree with its submission to 
+Chemometrics and Intelligent Laboratory Systems.
+
+Sincerely,
+[Your name and affiliations]

@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.Python
+*.so
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (não commitar datasets grandes)
+data/raw/*.csv
+data/processed/*.pkl
+data/priors/*.npy
+*.h5
+
+# Results
+results/
+*.png
+*.pdf
+
+# Environment
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store

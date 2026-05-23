@@ -1,0 +1,16 @@
+HIGHLIGHTS
+
+- Prior-guided gating layer integrates chemometric importance measures 
+  (ANOVA/VIP/RF) with deep learning for interpretable NIR spectroscopy
+
+- KL-divergence regularization maintains statistical grounding while 
+  allowing data-driven refinement (correlation 0.35-0.51 with priors)
+
+- Lightweight architecture (1.7k-6.9k params) achieves R²=0.86-0.93, 
+  competitive with PLS while avoiding catastrophic overparameterization
+
+- Learned gates identify chemically relevant bands (931nm C-H for fat), 
+  validated across food and petrochemical domains
+
+- Framework designed for small-sample regime (n=50-500) typical of 
+  analytical chemistry applications
