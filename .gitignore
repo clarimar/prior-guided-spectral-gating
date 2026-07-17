@@ -31,3 +31,7 @@ env/
 
 # OS
 .DS_Store
+
+# Revisions: keep final figures for each review round
+!revision_r*/figures/
+!revision_r*/figures/**
