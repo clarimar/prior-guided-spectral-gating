@@ -37,7 +37,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 
 methods = ['PLS', 'BandSelectNet\n+ANOVA (CV)', 'Plain CNN']
 tecator_r2 = [0.919, 0.862, 0.235]
-gasoline_r2 = [0.941, 0.928, np.nan]
+gasoline_r2 = [0.975, 0.928, np.nan]  # R1: PLS was 0.941 (H=10); R2: PLS is 0.975 (H*=5 via one-SE rule)
 tecator_err = [0, 0.036, 0]
 
 x = np.arange(len(methods))
@@ -60,16 +60,17 @@ ax.set_ylabel('Test $R^2$ Score', fontsize=13, fontweight='bold')
 ax.set_ylim([0, 1.05])
 ax.set_xticks(x)
 ax.set_xticklabels(methods, fontsize=11)
-ax.legend(loc='upper left', frameon=False, fontsize=11)
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.02), ncol=2, frameon=False, fontsize=11)
 ax.grid(axis='y', alpha=0.3, linestyle='--')
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 
 # Valores nos bars
-for bar, val in zip(bars1, tecator_r2):
+for i, (bar, val) in enumerate(zip(bars1, tecator_r2)):
     if val > 0.3:
+        offset = 0.06 if i == 1 else 0.03   # barra 1 (CV Tecator) tem error bar, precisa mais espaço
         height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, height + 0.03,
+        ax.text(bar.get_x() + bar.get_width()/2, height + offset,
                 f'{val:.3f}', ha='center', va='bottom', fontsize=9, fontweight='bold')
 
 for bar, val in zip(bars2, gasoline_r2):
@@ -97,14 +98,23 @@ params = [10, 1765, 6882, 109221]
 r2_scores = [0.919, 0.862, 0.928, 0.235]
 colors = ['#2E86AB', '#A23B72', '#F18F01', '#BC4B51']
 
+# Posições dos labels em relação a cada bolinha:
+# 0 PLS -> esquerda; 1 Ours(Tecator) -> esquerda;
+# 2 Ours(Gasoline) -> direita; 3 Plain CNN -> esquerda.
+# label_side: 'left' desloca para -18 px com ha='right';
+# 'right' desloca para +18 px com ha='left'.
+label_sides = ['left', 'left', 'right', 'left']
 for i, (method, param, r2, color) in enumerate(zip(methods, params, r2_scores, colors)):
-    ax.scatter(param, r2, s=250, color=color, alpha=0.85, 
+    ax.scatter(param, r2, s=250, color=color, alpha=0.85,
                edgecolor='black', linewidth=1.8, zorder=5)
-    
-    offset_y = 0.05 if i % 2 == 0 else -0.07
-    ax.annotate(method, xy=(param, r2),
-                xytext=(0, offset_y), textcoords='offset points',
-                fontsize=10, ha='center', va='center', fontweight='bold')
+    side = label_sides[i]
+    dx = -18 if side == 'left' else 18
+    ha = 'right' if side == 'left' else 'left'
+    # troca as quebras de linha do label por espaco (single-line, mais discreto)
+    label_txt = method.replace('\n', ' ')
+    ax.annotate(label_txt, xy=(param, r2),
+                xytext=(dx, 0), textcoords='offset points',
+                fontsize=10, ha=ha, va='center', fontweight='bold')
 
 ax.set_xscale('log')
 ax.set_xlabel('Number of Parameters (log scale)', fontsize=13, fontweight='bold')
@@ -117,12 +127,11 @@ ax.spines['right'].set_visible(False)
 # Regiões de referência
 ax.axhline(0.85, color='green', linestyle='--', alpha=0.35, linewidth=2.5)
 ax.fill_between([1, 200000], 0.85, 1.05, alpha=0.08, color='green')
-ax.text(20, 0.93, 'Good Performance\n($R^2 > 0.85$)', fontsize=9, color='green', fontweight='bold')
+ax.text(2000, 1.02, 'Good Performance ($R^2 > 0.85$)', fontsize=9, color='green', fontweight='bold', ha='center')
 
 ax.axvline(10000, color='red', linestyle='--', alpha=0.35, linewidth=2.5)
 ax.fill_betweenx([0, 1.05], 10000, 200000, alpha=0.08, color='red')
-ax.text(25000, 0.20, 'Overparameterized\n(>10k params)', fontsize=9, color='red', 
-        rotation=90, va='bottom', fontweight='bold')
+ax.text(45000, 0.05, 'Overparameterized (>10k params)', fontsize=9, color='red', fontweight='bold', ha='center')
 
 plt.tight_layout()
 plt.savefig(output_dir / 'fig3_parameter_efficiency.pdf', dpi=600, bbox_inches='tight')
