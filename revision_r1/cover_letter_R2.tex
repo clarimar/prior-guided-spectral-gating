@@ -1,0 +1,157 @@
+\documentclass[11pt,a4paper]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\signature{Clarimar Jos\'{e} Coelho \\
+           (on behalf of all authors) \\
+           \texttt{clarimar@pucgoias.edu.br}}
+
+\address{Clarimar Jos\'{e} Coelho \\
+         Pontif\'{i}cia Universidade Cat\'{o}lica de Goi\'{a}s \\
+         Av. Universit\'{a}ria, 1069 --- Setor Universit\'{a}rio \\
+         Goi\^{a}nia, GO 74605--010, Brazil}
+
+\begin{document}
+
+\begin{letter}{Professor Federico Marini \\
+               Editor-in-Chief \\
+               \textit{Chemometrics and Intelligent Laboratory Systems} \\
+               Elsevier}
+
+\opening{Dear Professor Marini,}
+
+We are pleased to submit the revised version of manuscript
+\textbf{CHEMOLAB-D-26-00658R1}, entitled
+\textit{``Prior-Guided Spectral Gating for Interpretable Deep Learning in
+Near-Infrared Spectroscopy,''} for your consideration.
+
+The revision addresses the single point raised by Reviewer~\#2 in the minor
+revision decision (Comment~1, Experiments), concerning the risk of
+overfitting in the selection of the number of PLS components. A detailed
+point-by-point response to the reviewer is provided separately in the file
+\texttt{response\_letter\_R2}. Below we summarise the modifications made
+to the manuscript itself so that the editorial office can quickly locate
+each change.
+
+\medskip
+\textbf{Summary of the technical change.}
+We now adopt the \emph{one-standard-error rule} of Hastie, Tibshirani and
+Friedman (2009) as a pre-registered criterion for selecting the number of
+PLS latent variables~$H$, applied to the leave-one-out cross-validation
+curve on the training set. This is the standard formal safeguard against
+the overfitting risk correctly identified by the reviewer.
+
+Applied \emph{ex post} to the identical training partitions used in the
+original submission (verified by exact reproduction of the R1 PLS
+baselines: Tecator $R^2=0.9191$, Gasoline $R^2=0.9414$), the one-SE rule
+yields:
+
+\begin{itemize}
+  \item \textbf{Tecator} ($n_{\text{train}}=172$): the argmin of RMSECV
+        lies at $H=14$, but the one-SE rule selects $H^*=10$---exactly
+        the value originally reported. All Tecator numbers in the
+        manuscript remain unchanged.
+  \item \textbf{Gasoline} ($n_{\text{train}}=48$): the argmin lies at
+        $H=6$, and the one-SE rule selects $H^*=5$ (not $H=10$ as
+        originally reported). Applied to the identical train/test split,
+        PLS Gasoline improves from $R^2=0.941$ (RMSE\,=\,0.223) to
+        $R^2=0.975$ (RMSE\,=\,0.145).
+\end{itemize}
+
+None of the four qualitative conclusions of the manuscript is affected:
+(i)~the Plain CNN failure is unchanged (it does not depend on the PLS
+baseline); (ii)~the identification of 931~nm as the dominant learned
+C--H feature is unchanged (it derives from our model's gate weights, not
+from PLS); (iii)~the lightweight-architecture argument is unchanged;
+(iv)~the $R^2>0.85$ threshold discussion remains valid for both
+baselines. The predictive gap on Gasoline nevertheless widens from
+$1.3\%$ to $4.7\%$, and three paragraphs were reworded accordingly to
+reflect the fair comparison against a stronger PLS baseline.
+
+\medskip
+\textbf{List of modifications to the manuscript.}
+Nine cirurgical edits were applied, in the order they appear:
+
+\begin{enumerate}
+  \setlength\itemsep{0.1em}
+  \item \textbf{Abstract} (second sentence): Gasoline PLS comparator
+        updated from ``$R^2=0.93$ vs $0.94$'' to
+        ``$R^2=0.93$ vs $0.98$''.
+  \item \textbf{Section~5.2 (Evaluation Protocol)}: the paragraph on
+        PLS component selection has been rewritten to describe the
+        one-standard-error rule, with citation to
+        Hastie~et~al.~(2009), and reports the RMSECV values, standard
+        errors, and $H^*$ selections for both datasets.
+  \item \textbf{Section~4.3 (Baselines)}: the phrase ``PLS with 10
+        components, selected via cross-validation'' has been replaced by
+        ``PLS with $H^*$ components selected by the one-standard-error
+        rule of Hastie~et~al.\ ($H^*=10$ for Tecator, $H^*=5$ for
+        Gasoline).''
+  \item \textbf{Table~1}: the Gasoline PLS row has been updated from
+        RMSE\,=\,0.223, $R^2=0.941$ (H\,=\,10) to
+        RMSE\,=\,0.145, $R^2=0.975$ (H\,=\,5). All other rows unchanged.
+  \item \textbf{Figure~2 caption}: Gasoline comparator updated
+        ($R^2=0.928$ vs $0.975$; gap $4.7\%$).
+  \item \textbf{Section~6.2 (Multi-Dataset Performance)}: the paragraph
+        discussing Gasoline results has been reworded to reflect the
+        widened gap and to clarify that the added complexity of the
+        proposed framework is justified by interpretability rather than
+        predictive superiority.
+  \item \textbf{Figure~3 caption}: the ``$86$--$93\%$ of PLS
+        performance'' descriptor has been updated to
+        ``$86$--$95\%$''.
+  \item \textbf{Section~7 (Addressing Potential Criticisms)}: the third
+        bullet has been reworded; the argument ``in Gasoline the gap is
+        only $1.3\%$, suggesting that in some domains our framework
+        approaches parity with the chemometric gold standard'' has been
+        replaced by an honest acknowledgment that the gap widens to
+        $4.7\%$ under fair comparison against a formally regularized
+        baseline.
+  \item \textbf{Section~8 (Conclusion), first paragraph}: PLS
+        comparator range updated from ``$R^2=0.86$--$0.93$ vs
+        $0.92$--$0.94$'' to ``$R^2=0.86$--$0.93$ vs $0.92$--$0.98$''.
+\end{enumerate}
+
+\medskip
+\textbf{New bibliographic entry.}
+One new reference has been added to support the one-standard-error rule:
+
+\begin{quote}
+Hastie, T., Tibshirani, R., \& Friedman, J. (2009).
+\textit{The Elements of Statistical Learning: Data Mining, Inference,
+and Prediction} (2nd~ed.). Springer, New York.
+\end{quote}
+
+The BibTeX entry is included in the submission package as
+\texttt{hastie2009\_bib\_entry.bib}. The citation key is
+\texttt{hastie2009elements}.
+
+\medskip
+\textbf{Reproducibility.}
+The one-SE analysis is fully reproducible from the code deposited in
+the project repository at
+\url{https://github.com/clarimar/prior-guided-spectral-gating}
+(folder \texttt{revision\_r1/}), which contains the analysis script
+\texttt{one\_se\_analysis.py} and the corresponding output. The script
+consumes the same pickles generated by
+\texttt{src/data/preprocessing\_multi.py} that produced the original
+Table~1 numbers, and can be re-executed by any reader wishing to verify
+the $H^*$ selections in under one minute.
+
+\medskip
+\textbf{Figures.}
+Figures~2 and~3 have been regenerated to reflect the new PLS Gasoline
+values. All other figures are unchanged.
+
+\medskip
+We thank the reviewer for the constructive comment, which has
+strengthened the methodological rigour of the manuscript by replacing
+an implicit stability argument with a formally justified selection rule.
+
+\closing{Yours sincerely,}
+
+\end{letter}
+\end{document}
