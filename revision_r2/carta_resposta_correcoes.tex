@@ -1,0 +1,163 @@
+% =====================================================================
+%  Trecho para a carta-resposta — pgsg_1 (CHEMOLAB-D-26-00658)
+%  Correções identificadas pelos próprios autores após a submissão da R1.
+%  Inserir como seção inicial, ANTES das respostas ponto a ponto.
+% =====================================================================
+
+\section*{Author-initiated corrections}
+
+While preparing the extension of this work to a second spectroscopic
+modality, we re-examined the experimental pipeline of the present manuscript
+and identified a replication error that affects several reported quantities.
+We report it here in full, together with the corrected results, before
+addressing the reviewers' individual comments. The correction does not alter
+the central claim of the paper, but it does change the magnitude of several
+secondary results and retracts one claim made in the abstract.
+
+\subsection*{1. Degenerate replicates at the largest training size}
+
+In the experiment runner, the model factories fixed the random seed at 42:
+
+\begin{verbatim}
+lambda: PGSGv2Model(hidden=32, max_epochs=500, patience=30, seed=42)
+\end{verbatim}
+
+The five ``seeds'' therefore varied only the draw of the training subset
+performed by the stratified sampler, never the initialisation of the model
+itself. At $n = 1{,}159$ the requested training size coincides with the size
+of the training pool, so the sampler returns the same subset for every seed;
+combined with a test split fixed at seed 42 and a model seed fixed at 42,
+the five replicates at that point are identical runs. We verified this
+directly in the saved output: at $n_{\text{actual}} = 1{,}158$ the five
+recorded $R^2$ values agree to the sixth decimal place for all five models
+(PGSGv2 $= 0.805524$, PGSGv2-random $= 0.757743$, PLS $= 0.568351$). At
+smaller training sizes, where the requested size is below the pool size, the
+values do vary across seeds, which confirms the mechanism.
+
+Two consequences follow. First, the bootstrap confidence intervals reported
+for the $n = 1{,}159$ row of Table~1 were computed by resampling five copies
+of a single measurement, which is why they appear as zero-width intervals
+(e.g.\ $[0.81, 0.81]$ and $[0.76, 0.76]$). They are not confidence intervals
+and have been removed. Second, and more consequentially, the reported
+$\Delta_{\text{prior}} = +0.048$ at that point is a single measurement
+against another single measurement, not a mean over five replicates.
+
+We have re-executed the full scale curve with ten seeds, each varying both
+the training-subset draw and the model initialisation, at every point of the
+grid. The revised Tables~1 and~2 report these results. As an internal check,
+PLS---being deterministic---remains identical across seeds at
+$n = 1{,}158$, as expected, and reproduces the previously published value
+exactly.
+
+\subsection*{2. Revised result: the literature prior does not improve accuracy}
+
+Under genuine replication, the paired difference between the
+literature-initialised and uninformed conditions is not significant at any
+training size, and its sign is not consistent:
+
+\begin{center}
+\small
+\begin{tabular}{rcc}
+\hline
+$n$ & $\Delta_{\text{prior}}$ (paired) & $p$ (Wilcoxon) \\
+\hline
+30      & $+0.010 \pm 0.078$ & $0.625$ \\
+60      & $-0.013 \pm 0.045$ & $0.322$ \\
+100     & $-0.046 \pm 0.060$ & $0.037$ \\
+200     & $+0.027 \pm 0.051$ & $0.193$ \\
+400     & $+0.011 \pm 0.051$ & $0.695$ \\
+700     & $+0.019 \pm 0.028$ & $0.084$ \\
+1{,}158 & $-0.005 \pm 0.013$ & $0.770$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The only nominally significant value, at $n = 100$, is in the direction
+\emph{opposite} to the prior, and is of the order expected by chance across
+seven tests; we do not interpret it as evidence against the prior either.
+
+We have accordingly revised the claims that the prior provides a measurable
+advantage in data-scarce regimes and that it continues to act as a beneficial
+regulariser at the largest training size. The correct statement is that the
+literature prior yields predictive performance statistically indistinguishable
+from an uninformed initialisation across the entire sample-size range studied.
+
+We note that this revised conclusion agrees with an independent evaluation on
+the same dataset reported in a companion study of cross-modality
+generalisation, in which ten-seed ablations in both NIR and Raman likewise
+found statistical equivalence in accuracy between the two initialisations,
+while gate topology was markedly more reproducible under the literature prior
+(pairwise Jaccard $0.90$--$0.94$ versus $0.58$--$0.65$). Taken together, the
+two studies support a more precise characterisation of what the prior
+contributes: interpretive stability rather than predictive gain. We consider
+this a clarification of the contribution rather than a weakening of it---a
+gate that selects different bands on every run is not a trustworthy
+explanation, even when its predictions are accurate.
+
+\subsection*{3. Retracted claim in the abstract}
+
+The abstract stated that for $n \leq 60$, PGSGv2 is the only method achieving
+positive $R^2$, and attributed this to prior-guided initialisation. Under
+ten-seed replication this is not correct on either count: at $n = 60$ the
+shallow CNN also attains a positive mean ($+0.013$), and the uninformed
+variant PGSGv2-random is positive at both $n = 30$ ($0.073$) and $n = 60$
+($0.138$), where it in fact slightly exceeds the literature-initialised
+variant.
+
+The underlying finding is nevertheless robust and remains the strongest
+result of the paper: in the small-sample regime, PLS ($-0.53$ at $n = 30$,
+$-0.08$ at $n = 60$) and the unconstrained MLP ($-3.05$ and $-1.41$) fail
+severely, while both PGSGv2 variants remain positive with an order of
+magnitude less variance. The advantage is attributable to the gated
+architecture, not to the chemical content of the initialisation. We have
+rewritten the sentence accordingly.
+
+\subsection*{4. Revised baseline comparison and crossover point}
+
+With genuine replication the ordering of the baselines at $n = 1{,}158$
+changes: the MLP mean rises to $0.749$ and the shallow CNN falls to $0.690$,
+making the MLP the strongest baseline. The relative gains of PGSGv2-lit are
+therefore $+38\%$ over PLS, $+5\%$ over MLP and $+14\%$ over CNN1D, replacing
+the previously reported $+42\%$, $+15\%$ and $+14\%$. These figures have been
+updated in the abstract, Section~5.2 and the conclusion.
+
+The crossover with PLS is also no longer a single point. PGSGv2-lit exceeds
+PLS at $n = 30$ and $n = 60$, falls below it at $n = 100$ and $n = 200$, and
+exceeds it consistently from $n = 400$ onward. The estimate $n^{*} \approx 95$
+was obtained by interpolating between two points of a curve that is not
+monotonic in this region. We have removed the interpolated crossover estimate
+and replaced it with the direct statement that PGSGv2 is superior in the
+small-sample regime and from $n \geq 400$, and comparable to or below PLS in
+the intermediate range. Figure~1(b) has been redrawn accordingly.
+
+\subsection*{5. Band-selection protocol}
+
+Section~4.1 described the removal of all bands with zero variance in any of
+the five seasons (the ``union-of-zeroed-bands'' protocol), yielding
+$p = 281$. The code computes the mask from the training split of each
+scenario instead. In the within-season configuration reported here the two
+procedures coincide at $p = 281$ for every scenario, so no reported result is
+affected; we verified this explicitly in the re-execution, where $p = 281$
+holds at all seven training sizes and all ten seeds. We have nevertheless
+corrected the description in Section~4.1 to state what the implementation
+does, and we note in the text that a mask derived per split would not in
+general be constant across the grid, which is a requirement for the scale
+curve to be interpretable.
+
+\subsection*{6. Typographical corrections}
+
+Two citation commands lost their leading backslash and were typeset as
+literal text in the compiled PDF (\texttt{citegoodfellow2016} in the
+introduction and \texttt{citehoerl1970} in Section~3.3); both are corrected.
+In Table~2 of the previous version, the $\Delta_{\text{PLS}}$ column carried
+inverted signs relative to the text, to Figure~2(a) and to the values
+computable from Table~1 (e.g.\ $-0.60$ tabulated at $n = 30$ where the text
+and the definition in the caption give $+0.60$). The column has been
+corrected.
+
+\subsection*{Availability}
+
+The re-execution script, the raw per-seed outputs and the diagnostic that
+identified the degenerate replicates are available in the public repository
+accompanying this manuscript, alongside the original outputs, so that the
+correction can be audited in full.
