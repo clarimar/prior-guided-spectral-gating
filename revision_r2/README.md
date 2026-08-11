@@ -27,6 +27,5 @@ reprodutibilidade do gate.
 
 ## Pendências
 
-- Figuras 1 e 2 ainda não regeradas a partir de `rerun_curva_completa.csv`
 - Colunas ρ e Jaccard da Tabela 2 ainda com 5 sementes (a reexecução salvou
   apenas R² e RMSE; os vetores de gate precisam ser extraídos)
