@@ -1,0 +1,240 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{walsh2020}
+K.~B. Walsh, N.~T. Anderson, A.~Koirala, Comparison of a {B}rix refractometer
+  and near infrared spectrophotometer for assessment of fruit maturity in
+  mango, Acta Horticulturae 1278 (2020) 69--76.
+\newblock \href {https://doi.org/10.17660/ActaHortic.2020.1278.10}
+  {\path{doi:10.17660/ActaHortic.2020.1278.10}}.
+
+\bibitem{pasquini2018}
+C.~Pasquini, Near infrared spectroscopy: {A} mature analytical technique with
+  new perspectives---{A} review, Analytica Chimica Acta 1026 (2018) 8--36.
+\newblock \href {https://doi.org/10.1016/j.aca.2018.04.004}
+  {\path{doi:10.1016/j.aca.2018.04.004}}.
+
+\bibitem{saranwong2004}
+S.~Saranwong, J.~Sornsrivichai, S.~Kawano, Prediction of ripe-stage eating
+  quality of mango fruit from its harvest quality measured nondestructively by
+  near infrared spectroscopy, Postharvest Biology and Technology 31~(2) (2004)
+  137--145.
+\newblock \href {https://doi.org/10.1016/j.postharvbio.2003.08.006}
+  {\path{doi:10.1016/j.postharvbio.2003.08.006}}.
+
+\bibitem{wold2001}
+S.~Wold, M.~Sj{\"o}str{\"o}m, L.~Eriksson, {PLS}-regression: a basic tool of
+  chemometrics, Chemometrics and Intelligent Laboratory Systems 58~(2) (2001)
+  109--130.
+\newblock \href {https://doi.org/10.1016/S0169-7439(01)00155-1}
+  {\path{doi:10.1016/S0169-7439(01)00155-1}}.
+
+\bibitem{anderson2020}
+N.~T. Anderson, K.~B. Walsh, P.~P. Subedi, C.~H. Hayes, Achieving robustness
+  across season, location and cultivar for a {NIRS} model for intact mango
+  fruit dry matter content, Postharvest Biology and Technology 168 (2020)
+  111202.
+\newblock \href {https://doi.org/10.1016/j.postharvbio.2020.111202}
+  {\path{doi:10.1016/j.postharvbio.2020.111202}}.
+
+\bibitem{anderson2020b}
+N.~T. Anderson, K.~B. Walsh, J.~R. Flynn, J.~P. Walsh, Achieving robustness
+  across season, location and cultivar for a {NIRS} model for intact mango
+  fruit dry matter content. {II}. {L}ocal {PLS} and nonlinear models,
+  Postharvest Biology and Technology 171 (2021) 111358.
+\newblock \href {https://doi.org/10.1016/j.postharvbio.2020.111358}
+  {\path{doi:10.1016/j.postharvbio.2020.111358}}.
+
+\bibitem{mishra2021deep}
+P.~Mishra, D.~Passos, Deep chemometrics: {V}alidation and transfer of a global
+  deep near-infrared fruit model to use it on a new portable instrument,
+  Journal of Chemometrics 35~(9) (2021) e3367.
+\newblock \href {https://doi.org/10.1002/cem.3367}
+  {\path{doi:10.1002/cem.3367}}.
+
+\bibitem{goodfellow2016}
+I.~Goodfellow, Y.~Bengio, A.~Courville,
+  \href{https://www.deeplearningbook.org}{Deep {L}earning}, MIT Press,
+  Cambridge, MA, 2016.
+\newline\urlprefix\url{https://www.deeplearningbook.org}
+
+\bibitem{walsh2024}
+J.~P. Walsh, A.~Neupane, A.~Koirala, K.~B. Walsh, Evaluation of {1D}
+  convolutional neural network in estimation of mango dry matter content,
+  Spectrochimica Acta Part A: Molecular and Biomolecular Spectroscopy 311
+  (2024) 124003.
+\newblock \href {https://doi.org/10.1016/j.saa.2024.124003}
+  {\path{doi:10.1016/j.saa.2024.124003}}.
+
+\bibitem{mishra2021synergistic}
+P.~Mishra, D.~Passos, A synergistic use of chemometrics and deep learning
+  improved the predictive performance of near-infrared spectroscopy models for
+  dry matter prediction in mango fruit, Chemometrics and Intelligent Laboratory
+  Systems 212 (2021) 104287.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2021.104287}
+  {\path{doi:10.1016/j.chemolab.2021.104287}}.
+
+\bibitem{passos2022}
+D.~Passos, P.~Mishra, A tutorial on automatic hyperparameter tuning of deep
+  spectral modelling for regression and classification tasks, Chemometrics and
+  Intelligent Laboratory Systems 223 (2022) 104520.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2022.104520}
+  {\path{doi:10.1016/j.chemolab.2022.104520}}.
+
+\bibitem{mishra2022hypes}
+P.~Mishra, D.~Passos, F.~Marini, J.-M. Roger, S.~Lohumi, H.~Bernhardt,
+  A.~Gowen, P.~Scheunders, J.~K. Basak, Deep learning for near-infrared
+  spectral data modelling: {H}ypes and benefits, TrAC Trends in Analytical
+  Chemistry 157 (2022) 116804.
+\newblock \href {https://doi.org/10.1016/j.trac.2022.116804}
+  {\path{doi:10.1016/j.trac.2022.116804}}.
+
+\bibitem{passos2022perspectives}
+D.~Passos, P.~Mishra, Perspectives on deep learning for near-infrared spectral
+  data modelling, NIR News 33~(1--2) (2022) 7--14.
+\newblock \href {https://doi.org/10.1177/09603360221142821}
+  {\path{doi:10.1177/09603360221142821}}.
+
+\bibitem{pgsg_original}
+G.~Coelho, A.~Chagas, L.~C. Carneiro, C.~J. Coelho, Prior-{G}uided {S}pectral
+  {G}ating for {I}nterpretable {D}eep {L}earning in {N}ear-{I}nfrared
+  {S}pectroscopy, {SSRN} Preprint (2025).
+\newblock \href {https://doi.org/10.2139/ssrn.6845520}
+  {\path{doi:10.2139/ssrn.6845520}}.
+
+\bibitem{chong2005}
+I.-G. Chong, C.-H. Jun, Performance of some variable selection methods when
+  multicollinearity is present, Chemometrics and Intelligent Laboratory Systems
+  78~(1--2) (2005) 103--112.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2004.12.011}
+  {\path{doi:10.1016/j.chemolab.2004.12.011}}.
+
+\bibitem{anderson2021}
+N.~T. Anderson, K.~B. Walsh, P.~P. Subedi, Mango {DMC} {NIR} data v3 (2021).
+\newblock \href {https://doi.org/10.17632/46htwnp833.3}
+  {\path{doi:10.17632/46htwnp833.3}}.
+
+\bibitem{ke2022}
+X.~Ke, L.~Liao, L.~Ni, J.~Chen, P.~Ding, Near-infrared spectroscopic detection
+  of dry matter content of mango based on {Att-BiLSTM}, Frontiers in Plant
+  Science 13 (2022) 1019413.
+\newblock \href {https://doi.org/10.3389/fpls.2022.1019413}
+  {\path{doi:10.3389/fpls.2022.1019413}}.
+
+\bibitem{mishra2023semi}
+P.~Mishra, E.~Woltering, Semi-supervised robust models for predicting dry
+  matter in mango fruit with near-infrared spectroscopy, Postharvest Biology
+  and Technology 200 (2023) 112335.
+\newblock \href {https://doi.org/10.1016/j.postharvbio.2023.112335}
+  {\path{doi:10.1016/j.postharvbio.2023.112335}}.
+
+\bibitem{mishra2022explainable}
+P.~Mishra, R.~Nikzad-Langerodi, Explainable predictive modeling for limited
+  spectral data, Chemometrics and Intelligent Laboratory Systems 225 (2022)
+  104572.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2022.104572}
+  {\path{doi:10.1016/j.chemolab.2022.104572}}.
+
+\bibitem{srivastava2014}
+N.~Srivastava, G.~Hinton, A.~Krizhevsky, I.~Sutskever, R.~Salakhutdinov,
+  Dropout: {A} simple way to prevent neural networks from overfitting, Journal
+  of Machine Learning Research 15 (2014) 1929--1958.
+
+\bibitem{hoerl1970}
+A.~E. Hoerl, R.~W. Kennard, Ridge regression: {B}iased estimation for
+  nonorthogonal problems, Technometrics 12~(1) (1970) 55--67.
+\newblock \href {https://doi.org/10.1080/00401706.1970.10488634}
+  {\path{doi:10.1080/00401706.1970.10488634}}.
+
+\bibitem{kingma2015}
+D.~P. Kingma, J.~Ba, Adam: {A} method for stochastic optimization, in:
+  Proceedings of the 3rd International Conference on Learning Representations
+  ({ICLR}), 2015.
+\newblock \href {http://arxiv.org/abs/1412.6980} {\path{arXiv:1412.6980}}.
+
+\bibitem{lorbert2011}
+A.~Lorbert, D.~Eis, V.~Kostina, D.~Blei, P.~Ramadge, Exploiting covariate
+  similarity in sparse regression via the pairwise elastic net, in: Proceedings
+  of the 14th International Conference on Artificial Intelligence and
+  Statistics ({AISTATS}), 2011, pp. 477--485.
+
+\bibitem{guthrie2005}
+J.~A. Guthrie, D.~J. Reid, K.~B. Walsh, Assessment of internal quality
+  attributes of mandarin fruit. 2. {NIR} calibration model robustness,
+  Australian Journal of Agricultural Research 56~(4) (2005) 417--426.
+\newblock \href {https://doi.org/10.1071/AR04147} {\path{doi:10.1071/AR04147}}.
+
+\bibitem{guthrie1998}
+J.~A. Guthrie, K.~B. Walsh, D.~J. Reid, C.~B. Liebenberg, Assessment of
+  internal quality attributes of mandarin fruit. 1. {NIR} calibration model
+  development, Australian Journal of Agricultural Research 56~(4) (2005)
+  405--416.
+\newblock \href {https://doi.org/10.1071/AR04146} {\path{doi:10.1071/AR04146}}.
+
+\bibitem{barnes1989}
+R.~J. Barnes, M.~S. Dhanoa, S.~J. Lister, Standard normal variate
+  transformation and de-trending of near-infrared diffuse reflectance spectra,
+  Applied Spectroscopy 43~(5) (1989) 772--777.
+\newblock \href {https://doi.org/10.1366/0003702894202201}
+  {\path{doi:10.1366/0003702894202201}}.
+
+\bibitem{savitzky1964}
+A.~Savitzky, M.~J.~E. Golay, Smoothing and differentiation of data by
+  simplified least squares procedures, Analytical Chemistry 36~(8) (1964)
+  1627--1639.
+\newblock \href {https://doi.org/10.1021/ac60214a047}
+  {\path{doi:10.1021/ac60214a047}}.
+
+\bibitem{metz2022}
+P.~Mishra, D.~N. Rutledge, J.-M. Roger, K.~Wali, H.~A.~R. Khan, Chemometric
+  pre-processing can negatively affect the performance of near-infrared
+  spectroscopy models for fruit quality prediction, Talanta 229 (2021) 122303.
+\newblock \href {https://doi.org/10.1016/j.talanta.2021.122303}
+  {\path{doi:10.1016/j.talanta.2021.122303}}.
+
+\bibitem{naes2002}
+T.~N{\ae}s, T.~Isaksson, T.~Fearn, T.~Davies, A {U}ser-{F}riendly {G}uide to
+  {M}ultivariate {C}alibration and {C}lassification, NIR Publications,
+  Chichester, UK, 2002.
+
+\bibitem{pedregosa2011}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, {\'E}.~Duchesnay, Scikit-learn:
+  {M}achine learning in {P}ython, Journal of Machine Learning Research 12
+  (2011) 2825--2830.
+
+\bibitem{cui2018}
+C.~Cui, T.~Fearn, Modern practical convolutional neural networks for
+  multivariate regression: {A}pplications to {NIR} calibration, Chemometrics
+  and Intelligent Laboratory Systems 182 (2018) 9--20.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2018.07.008}
+  {\path{doi:10.1016/j.chemolab.2018.07.008}}.
+
+\bibitem{acquarelli2017}
+J.~Acquarelli, T.~van Laarhoven, J.~Gerretzen, T.~N. Tran, L.~M.~C. Buydens,
+  E.~Marchiori, Convolutional neural networks for vibrational spectroscopic
+  data analysis, Analytica Chimica Acta 954 (2017) 22--31.
+\newblock \href {https://doi.org/10.1016/j.aca.2016.12.010}
+  {\path{doi:10.1016/j.aca.2016.12.010}}.
+
+\bibitem{walsh2023review}
+J.~P. Walsh, A.~Neupane, A.~Koirala, M.~Li, N.~T. Anderson, Review: {T}he
+  evolution of chemometrics coupled with near infrared spectroscopy for fruit
+  quality evaluation. {II}. {T}he rise of convolutional neural networks,
+  Journal of Near Infrared Spectroscopy 31~(3) (2023) 109--125.
+\newblock \href {https://doi.org/10.1177/09670335231173140}
+  {\path{doi:10.1177/09670335231173140}}.
+
+\bibitem{mishra2021transfer}
+P.~Mishra, D.~Passos, Realizing transfer learning for updating deep learning
+  models of spectral data to be used in a new scenario, Chemometrics and
+  Intelligent Laboratory Systems 212 (2021) 104283.
+\newblock \href {https://doi.org/10.1016/j.chemolab.2021.104283}
+  {\path{doi:10.1016/j.chemolab.2021.104283}}.
+
+\end{thebibliography}
