@@ -1,7 +1,8 @@
 *.aux
 *.log
 *.out
-*.bbl
 *.blg
 *.spl
 *.synctex.gz
+
+# .bbl é versionado de propósito: exigido na submissão Elsevier
