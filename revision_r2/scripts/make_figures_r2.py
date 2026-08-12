@@ -36,10 +36,20 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wilcoxon
 
-# ρ e Jaccard não foram remedidos na reexecução (só R² e RMSE foram salvos).
-# Valores das 5 sementes originais, mantidos e sinalizados como tal.
+# ρ e Jaccard vêm de gate_metrics.csv (rerun_gates.py, 10 sementes, ambas
+# as condições). Fallback para os valores publicados de 5 sementes só se o
+# arquivo não existir — nesse caso a figura sinaliza a limitação.
 RHO_5SEEDS = {30: 1.00, 60: 1.00, 100: 1.00, 200: 1.00, 400: 1.00, 700: 1.00, 1159: 1.00}
 JACC_5SEEDS = {30: 0.97, 60: 0.96, 100: 0.97, 200: 1.00, 400: 0.97, 700: 0.95, 1159: 1.00}
+
+
+def carregar_gates(path):
+    """gate_metrics.csv -> dict[n] = (rho_lit, jacc_lit, rho_rand, jacc_rand)."""
+    if path is None or not Path(path).exists():
+        return None
+    df = pd.read_csv(path)
+    return {int(r.n_actual): (r.rho_lit, r.jaccard_lit, r.rho_rand, r.jaccard_rand)
+            for r in df.itertuples()}
 
 CORES = {
     "PGSGv2": "#1f4e79",
@@ -140,7 +150,7 @@ def figura1(res: pd.DataFrame, out: Path):
 
 
 # ---------------------------------------------------------------- Figura 2
-def figura2(res: pd.DataFrame, dp: pd.DataFrame, out: Path):
+def figura2(res: pd.DataFrame, dp: pd.DataFrame, out: Path, gm=None):
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     (axa, axb), (axc, axd) = axes
 
@@ -182,21 +192,40 @@ def figura2(res: pd.DataFrame, dp: pd.DataFrame, out: Path):
     axb.text(0.98, 0.04, "* $p<0.05$ (Wilcoxon)", transform=axb.transAxes,
              ha="right", fontsize=7, color="0.35")
 
-    # (c) rho — 5 sementes originais, sinalizado
-    rho = [RHO_5SEEDS[n if n in RHO_5SEEDS else 1159] for n in ns]
-    axc.plot(xpos, rho, marker="o", ms=5, lw=1.6, color="#1f4e79")
+    # (c) e (d): duas condicoes, 10 sementes, escala completa 0-1
+    if gm is not None:
+        rho_l = [gm[n][0] for n in ns]; jac_l = [gm[n][1] for n in ns]
+        rho_r = [gm[n][2] for n in ns]; jac_r = [gm[n][3] for n in ns]
+        suf = ""
+    else:
+        rho_l = [RHO_5SEEDS.get(n, 1.00) for n in ns]
+        jac_l = [JACC_5SEEDS.get(n, 1.00) for n in ns]
+        rho_r = jac_r = None
+        suf = "  (5 seeds)"
+
+    axc.plot(xpos, rho_l, marker="o", ms=5, lw=1.6, color="#1f4e79",
+             label="Literature prior")
+    if rho_r is not None:
+        axc.plot(xpos, rho_r, marker="s", ms=5, lw=1.6, ls="--", color="#e67e22",
+                 label="Uninformed")
+        axc.legend(fontsize=7.5, loc="center right", framealpha=0.9)
     axc.set_xticks(xpos); axc.set_xticklabels(rot, fontsize=8)
-    axc.set_ylim(0.990, 1.002)
-    axc.set_xlabel("$n$"); axc.set_ylabel("$\\rho(\\mathbf{g},\\mathbf{s})$  (5 seeds)")
+    axc.set_ylim(-0.05, 1.05)
+    axc.set_xlabel("$n$")
+    axc.set_ylabel("$\\rho(\\mathbf{g},\\mathbf{s})$" + suf)
     axc.set_title("(c) H3: gate--prior correlation", fontsize=10)
     axc.grid(alpha=0.25, lw=0.5)
 
-    # (d) Jaccard — 5 sementes originais, sinalizado
-    jac = [JACC_5SEEDS[n if n in JACC_5SEEDS else 1159] for n in ns]
-    axd.plot(xpos, jac, marker="s", ms=5, lw=1.6, color="#27ae60")
+    axd.plot(xpos, jac_l, marker="o", ms=5, lw=1.6, color="#1f4e79",
+             label="Literature prior")
+    if jac_r is not None:
+        axd.plot(xpos, jac_r, marker="s", ms=5, lw=1.6, ls="--", color="#e67e22",
+                 label="Uninformed")
+        axd.legend(fontsize=7.5, loc="center right", framealpha=0.9)
     axd.set_xticks(xpos); axd.set_xticklabels(rot, fontsize=8)
-    axd.set_ylim(0.90, 1.02)
-    axd.set_xlabel("$n$"); axd.set_ylabel("Jaccard (top 10\\%)  (5 seeds)")
+    axd.set_ylim(-0.05, 1.05)
+    axd.set_xlabel("$n$")
+    axd.set_ylabel("Jaccard (top decile)" + suf)
     axd.set_title("(d) H4: gate stability across seeds", fontsize=10)
     axd.grid(alpha=0.25, lw=0.5)
 
@@ -211,6 +240,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", default="results/rerun_curva_completa.csv")
     ap.add_argument("--outdir", default="revision_r2/figures")
+    ap.add_argument("--gates-csv", default="revision_r2/results/rerun_gates/gate_metrics.csv",
+                    help="saida de rerun_gates.py; se ausente, paineis c/d usam 5 sementes")
     a = ap.parse_args()
 
     df = carregar(Path(a.csv))
@@ -229,10 +260,13 @@ def main():
 
     print("\nFiguras:")
     figura1(res, out)
-    figura2(res, dp, out)
+    gm = carregar_gates(a.gates_csv)
+    if gm is None:
+        print("  [aviso] gate_metrics.csv ausente -> paineis (c)/(d) com 5 sementes")
+    figura2(res, dp, out, gm)
     print(f"\nem: {out.resolve()}")
-    print("\nNota: painéis (c) e (d) da Fig. 2 ainda vêm das 5 sementes originais.")
-    print("A reexecução salvou apenas R² e RMSE, não os vetores de gate.")
+    if gm is not None:
+        print("\nPainéis (c) e (d): 10 sementes, ambas as condições (gate_metrics.csv).")
 
 
 if __name__ == "__main__":

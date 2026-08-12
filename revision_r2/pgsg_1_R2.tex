@@ -168,9 +168,11 @@ variants remain positive while PLS ($-0.53$ at $n = 30$) and an unconstrained
 MLP ($-3.05$) fail severely. The chemical content of the initialization,
 however, does not contribute to accuracy: a literature prior and an
 uninformed initialization are statistically indistinguishable at every
-training size studied. Its contribution is interpretive---learned gates are
-chemically coherent ($\rho(\mathbf{g},\mathbf{s}) \geq 0.998$) and highly
-reproducible across seeds (Jaccard $\geq 0.945$). PGSGv2 provides a
+training size studied. Its contribution is interpretive: gates initialised from the prior stay
+chemically coherent ($\rho(\mathbf{g},\mathbf{s}) \geq 0.9987$) and select a
+reproducible band set across seeds (Jaccard $0.945$--$0.987$), whereas
+uninformed gates of equal accuracy do neither ($\rho \leq 0.28$, Jaccard
+$0.09$--$0.57$). PGSGv2 provides a
 scalable and interpretable architecture for NIR calibration when labeled
 samples are limited.
 \end{abstract}
@@ -273,9 +275,10 @@ gates with an end-to-end MLP regressor trained via backpropagation;
 (iv)~a scalability study on seven training-set sizes ($n = 30$ to $1{,}159$)
 with ten random seeds, establishing the sample-size regime in which
 PGSGv2 outperforms PLS and deep learning baselines; and
-(v)~assessment of four interpretability metrics (hypotheses H1--H4) that
-characterize the relationship between learned gates, the prior, and
-performance.
+(v)~assessment of four interpretability metrics (hypotheses H1--H4),
+evaluated under both literature-informed and uninformed initialization,
+which dissociate predictive performance from the reproducibility and
+chemical coherence of the learned gate.
 
 %% ===========================================================================
 \section{Background}
@@ -739,8 +742,11 @@ accuracy advantage over an uninformed initialization
 
 \subsection{Interpretability Metrics (H1--H4)}
 
-Table~\ref{tab:interp} and Figure~\ref{fig:hypotheses} summarize the
-four interpretability metrics across the $n$-grid.
+Tables~\ref{tab:performance} and~\ref{tab:interpret}, together with
+Figure~\ref{fig:hypotheses}, summarize the four metrics across the $n$-grid.
+We report performance and interpretability separately because the revised
+analysis dissociates them: the two initializations are equivalent in the
+former and sharply different in the latter.
 
 \paragraph{H1 (Performance crossover).}
 $\Delta_\mathrm{PLS} = \bar{R}^2(\text{PGSGv2-lit}) - \bar{R}^2(\text{PLS})$ is
@@ -757,7 +763,7 @@ is competitive, and we do not report a single interpolated crossover point.
 \paragraph{H2 (Prior utility).}
 Under seed-paired comparison, $\Delta_\mathrm{prior}$ is not significant at
 any training size and its sign is not consistent across the grid
-(Table~\ref{tab:interp}). The only nominally significant value occurs at
+(Table~\ref{tab:performance}). The only nominally significant value occurs at
 $n = 100$ ($-0.046$, $p = 0.037$) and is in the direction opposite to the
 prior; across seven tests a value of this magnitude is within what chance
 would produce, and we do not interpret it as evidence against the prior
@@ -770,51 +776,114 @@ than on replicated runs. The value of the prior is established instead by
 H3 and H4 below, and is interpretive rather than predictive.
 
 \paragraph{H3 (Gate--prior correlation).}
-$\rho(\mathbf{g}, \mathbf{s}) \geq 0.998$ across all $n$
-(Figure~\ref{fig:hypotheses}c). This high correlation, combined with
-non-trivial gate standard deviations ($\sigma(\mathbf{g}) = 0.12$--$0.18$),
-should not be interpreted as a convergence failure. Rather, it reflects
-that the chemical absorption features encoded in the literature prior
-genuinely align with the spectral structure that the model extracts from
-the training data. The absence of VIP-style circularity is confirmed by
-the fact that PGSGv2-lit and PGSGv2-random produce different gate profiles
-despite having the same architecture and training procedure.
+With the literature prior, $\rho(\mathbf{g},\mathbf{s}) \geq 0.9987$ at every
+training size (Table~\ref{tab:interpret}), decreasing slightly and steadily
+as $n$ grows, from $1.0000$ at $n \leq 100$ to $0.9987$ at $n = 1{,}159$. The
+learned gate therefore departs from its initialization only marginally, even
+when abundant data are available. Combined with non-trivial gate standard
+deviations ($\sigma(\mathbf{g}) = 0.12$--$0.18$), this should not be read as a
+convergence failure: the gate is trainable, as the gradient analysis of
+Section~5.1 establishes, but the objective offers little incentive to move
+away from a chemically plausible starting point.
+
+The uninformed condition makes the contrast concrete. Starting from
+$\theta_0 = \mathbf{0}$, the converged gate reaches only $\rho = 0.035$ at
+$n = 30$ and $\rho = 0.280$ at $n = 1{,}159$: it never approaches the
+literature profile, yet its predictive accuracy is statistically
+indistinguishable throughout (Table~\ref{tab:performance}). The optimization
+problem thus admits solutions of equivalent accuracy whose spectral
+weightings are almost unrelated to one another, and the prior selects among
+them rather than improving upon them. This also confirms the absence of
+VIP-style circularity: the two conditions share architecture and training
+procedure yet converge to profiles that barely overlap.
+
+The trend in the uninformed condition is in the expected direction --- $\rho$
+rises from $0.035$ to $0.280$ as $n$ grows --- though not monotonically, with
+a dip at $n = 60$ and a plateau between $n = 200$ and $n = 400$. More data do
+pull the gate towards chemically relevant regions, but slowly: at the largest
+training size available here the uninformed gate still shares little
+structure with the literature profile.
 
 \paragraph{H4 (Gate stability).}
-Jaccard overlap of the top 10\% gate indices across seed pairs ranges from
-$0.945$ to $1.000$ (Figure~\ref{fig:hypotheses}d), with no consistent trend
-with $n$. This high reproducibility indicates that the learned band selection
-is a stable property of the architecture and prior, not an artifact of a
-particular random seed. For practical deployment, this stability supports
-the use of the gate profile as a physically meaningful feature importance
-measure.
+Jaccard overlap of the top-decile gate indices across seed pairs ranges from
+$0.945$ to $0.987$ under the literature prior, with no consistent trend in
+$n$. Under uninformed initialization it ranges from $0.090$ to $0.566$
+(Table~\ref{tab:interpret}). The prior thus multiplies the reproducibility of
+the selected band set by a factor of between $1.7$ and $10.6$, largest where
+data are scarcest.
+
+This dissociation is, in our view, the central result of the revised
+analysis. At every training size the two conditions predict equally well; at
+every training size only one of them yields an explanation that survives a
+change of random seed. A gate that selects a different tenth of the spectrum
+on each run cannot be offered to a spectroscopist as a feature-importance
+profile, however accurate its predictions. The contribution of a
+literature-derived prior is therefore not to make the model more accurate,
+but to make its interpretation stable enough to be worth reading --- which
+is, for a method whose stated purpose is interpretable calibration, the
+property that matters.
+
+We note that the same dissociation is reported, on a different modality,
+target analyte and instrument, in a companion study of cross-modality
+generalization to Raman spectroscopy: statistical equivalence in accuracy,
+with pairwise Jaccard of $0.90$--$0.94$ under a literature prior versus
+$0.58$--$0.65$ without one.
 
 \begin{table}[htb]
   \centering
-  \caption{Interpretability metrics per training size $n$.
+  \caption{Performance metrics per training size $n$.
            $\Delta_\mathrm{PLS} = \bar{R}^2(\text{PGSGv2-lit})
            - \bar{R}^2(\text{PLS})$ (positive: PGSGv2 better);
            $\Delta_\mathrm{prior}$: seed-paired difference between
            PGSGv2-lit and PGSGv2-rand, with the $p$-value of a two-sided
-           Wilcoxon signed-rank test over ten seeds;
-           $\rho$: mean Pearson correlation between gate and prior;
-           Jaccard: inter-seed overlap of top 10\% bands. No value of
+           Wilcoxon signed-rank test over ten seeds. No value of
            $\Delta_\mathrm{prior}$ is significant in the direction of the
            prior at any training size.}
-  \label{tab:interp}
+  \label{tab:performance}
   \renewcommand{\arraystretch}{1.15}
-  \begin{tabular}{r r c r r r}
+  \begin{tabular}{r r c r}
     \toprule
-    $n$ & $\Delta_\mathrm{PLS}$ & $\Delta_\mathrm{prior}$ (paired) & $p$
+    $n$ & $\Delta_\mathrm{PLS}$ & $\Delta_\mathrm{prior}$ (paired) & $p$ \\
+    \midrule
+      30 & $+0.614$ & $+0.010 \pm 0.078$ & $0.625$ \\
+      60 & $+0.205$ & $-0.013 \pm 0.045$ & $0.322$ \\
+     100 & $-0.091$ & $-0.046 \pm 0.060$ & $0.037$ \\
+     200 & $-0.014$ & $+0.027 \pm 0.051$ & $0.193$ \\
+     400 & $+0.057$ & $+0.011 \pm 0.051$ & $0.695$ \\
+     700 & $+0.140$ & $+0.019 \pm 0.028$ & $0.084$ \\
+    1159 & $+0.218$ & $-0.005 \pm 0.013$ & $0.770$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htb]
+  \centering
+  \caption{Interpretability metrics per training size $n$, for both
+           initializations, over ten seeds.
+           $\rho(\mathbf{g},\mathbf{s})$: Pearson correlation between the
+           learned gate and the literature prior. Jaccard: mean overlap of
+           the top-decile bands ($q = 28$ of $p = 281$) across all pairs of
+           seeds. The two conditions are statistically indistinguishable in
+           accuracy (Table~\ref{tab:performance}) yet differ sharply here:
+           without a prior the converged gate bears almost no relation to
+           known absorption chemistry and selects different bands on each
+           run.}
+  \label{tab:interpret}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{r cc cc}
+    \toprule
+    & \multicolumn{2}{c}{Literature prior} & \multicolumn{2}{c}{Uninformed} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+    $n$ & $\rho(\mathbf{g},\mathbf{s})$ & Jaccard
         & $\rho(\mathbf{g},\mathbf{s})$ & Jaccard \\
     \midrule
-      30 & $+0.614$ & $+0.010 \pm 0.078$ & $0.625$ & $1.00$ & $0.97$ \\
-      60 & $+0.205$ & $-0.013 \pm 0.045$ & $0.322$ & $1.00$ & $0.96$ \\
-     100 & $-0.091$ & $-0.046 \pm 0.060$ & $0.037$ & $1.00$ & $0.97$ \\
-     200 & $-0.014$ & $+0.027 \pm 0.051$ & $0.193$ & $1.00$ & $1.00$ \\
-     400 & $+0.057$ & $+0.011 \pm 0.051$ & $0.695$ & $1.00$ & $0.97$ \\
-     700 & $+0.140$ & $+0.019 \pm 0.028$ & $0.084$ & $1.00$ & $0.95$ \\
-    1159 & $+0.218$ & $-0.005 \pm 0.013$ & $0.770$ & $1.00$ & $1.00$ \\
+      30 & $1.0000$ & $0.960$ & $0.035$ & $0.112$ \\
+      60 & $1.0000$ & $0.956$ & $0.025$ & $0.090$ \\
+     100 & $1.0000$ & $0.969$ & $0.068$ & $0.166$ \\
+     200 & $0.9998$ & $0.987$ & $0.192$ & $0.307$ \\
+     400 & $0.9996$ & $0.976$ & $0.190$ & $0.433$ \\
+     700 & $0.9995$ & $0.945$ & $0.238$ & $0.386$ \\
+    1159 & $0.9987$ & $0.950$ & $0.280$ & $0.566$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -846,10 +915,11 @@ measure.
            superiority; the sign changes twice across the grid, with PLS
            competitive at $n = 100$--$200$. (b)~H2: $\Delta_\mathrm{prior}$,
            seed-paired, with error bars over ten seeds; no training size
-           shows a significant advantage for the literature prior. (c)~H3: high $\rho(\mathbf{g}, \mathbf{s})$
-           reflects genuine chemical alignment of the converged gate with
-           the spectroscopic prior. (d)~H4: near-perfect Jaccard stability
-           indicates that band selection is reproducible across random seeds.}
+           shows a significant advantage for the literature prior.
+           (c)~H3 and (d)~H4 contrast the two initializations: the
+           literature-initialized gate stays close to the prior and selects
+           a reproducible band set at every sample size, whereas the
+           uninformed gate does neither, despite equivalent accuracy.}
   \label{fig:hypotheses}
 \end{figure}
 
@@ -976,15 +1046,20 @@ The proposed PGSGv2 architecture addresses both issues through independent
 sigmoid gates and end-to-end MLP regression via backpropagation. Applied
 to mango DMC\% prediction on the publicly available Mango DMC~v3 dataset,
 PGSGv2 attains $R^2 = 0.786 \pm 0.019$ at $n = 1{,}159$---a 38\%
-improvement over PLS and 5\% over a standard MLP---with near-perfect gate
-stability (Jaccard $\geq 0.945$) and high chemical coherence
-($\rho(\mathbf{g}, \mathbf{s}) \geq 0.998$) across random seeds. In the
+improvement over PLS and 5\% over a standard MLP---with gate stability
+(Jaccard $0.945$--$0.987$) and chemical coherence
+($\rho(\mathbf{g}, \mathbf{s}) \geq 0.9987$) across random seeds. In the
 small-sample regime the gated architecture is decisive: at $n \leq 60$ both
 PGSGv2 variants remain positive while PLS and an unconstrained MLP fail
 severely and with far greater variance. The chemical content of the
 initialization, by contrast, does not measurably affect accuracy at any
-sample size; its contribution is to make the learned gate reproducible, and
-therefore interpretable, rather than to make it more accurate.
+sample size. Its role is revealed instead by the interpretability metrics:
+an uninformed gate of statistically indistinguishable accuracy attains
+$\rho \leq 0.28$ against the literature profile and a cross-seed Jaccard as
+low as $0.09$, meaning that the same predictive performance is reached by
+weighting spectral regions that bear little relation to known absorption
+chemistry and that change from run to run. The prior selects, among many
+equally accurate solutions, the one that can be read.
 
 Future work should explore: differentiable ridge regression as the internal
 regressor to recover PLS-level statistical efficiency at small $n$; domain
