@@ -11,8 +11,10 @@ modality, we re-examined the experimental pipeline of the present manuscript
 and identified a replication error that affects several reported quantities.
 We report it here in full, together with the corrected results, before
 addressing the reviewers' individual comments. The correction does not alter
-the central claim of the paper, but it does change the magnitude of several
-secondary results and retracts one claim made in the abstract.
+the central claim of the paper, but it changes the magnitude of several
+secondary results, retracts one claim made in the abstract, and --- in
+tracing the error to its consequences --- produced a new and stronger result
+in its place (Section~3 below).
 
 \subsection*{1. Degenerate replicates at the largest training size}
 
@@ -94,7 +96,56 @@ this a clarification of the contribution rather than a weakening of it---a
 gate that selects different bands on every run is not a trustworthy
 explanation, even when its predictions are accurate.
 
-\subsection*{3. Retracted claim in the abstract}
+\subsection*{3. New result: accuracy and interpretability dissociate}
+
+Having established that the prior does not improve accuracy, we re-measured
+the two interpretability metrics --- which the previous version reported over
+five seeds --- under ten seeds and, for the first time, under \emph{both}
+initialisations. The gate vectors were extracted at every point of the grid
+and are deposited with the revision.
+
+The literature-prior figures reproduce those previously reported:
+$\rho(\mathbf{g},\mathbf{s}) \geq 0.9987$ and pairwise Jaccard
+$0.945$--$0.987$ across the sample-size range. The uninformed condition,
+never previously measured on these metrics, differs sharply:
+
+\begin{center}
+\small
+\begin{tabular}{r cc cc}
+\hline
+& \multicolumn{2}{c}{Literature prior} & \multicolumn{2}{c}{Uninformed} \\
+$n$ & $\rho$ & Jaccard & $\rho$ & Jaccard \\
+\hline
+     30 & $1.0000$ & $0.960$ & $0.035$ & $0.112$ \\
+     60 & $1.0000$ & $0.956$ & $0.025$ & $0.090$ \\
+    100 & $1.0000$ & $0.969$ & $0.068$ & $0.166$ \\
+    200 & $0.9998$ & $0.987$ & $0.192$ & $0.307$ \\
+    400 & $0.9996$ & $0.976$ & $0.190$ & $0.433$ \\
+    700 & $0.9995$ & $0.945$ & $0.238$ & $0.386$ \\
+1{,}159 & $0.9987$ & $0.950$ & $0.280$ & $0.566$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Two conditions that are statistically indistinguishable in predictive
+accuracy at every sample size (Section~2 above) thus differ by a factor of
+between $1.7$ and $10.6$ in the reproducibility of the band set they select,
+and the uninformed gate never exceeds $\rho = 0.28$ against the literature
+profile. The optimisation admits many solutions of equivalent accuracy whose
+spectral weightings bear little relation to one another or to known
+absorption chemistry; the prior does not find a better one, it selects the
+one that can be read.
+
+We consider this the most substantive gain of the revision. The original
+manuscript claimed a small accuracy benefit from the prior, which did not
+survive replication; in its place we can now report a large, consistent and
+directly measured benefit of a different kind, on the property that
+motivates the method in the first place. Section~5.3 and Table~3 of the
+revised manuscript are organised around this result, and Table~2 now reports
+performance separately from interpretability so that the dissociation is
+legible at a glance.
+
+\subsection*{4. Retracted claim in the abstract}
 
 The abstract stated that for $n \leq 60$, PGSGv2 is the only method achieving
 positive $R^2$, and attributed this to prior-guided initialisation. Under
@@ -112,7 +163,7 @@ magnitude less variance. The advantage is attributable to the gated
 architecture, not to the chemical content of the initialisation. We have
 rewritten the sentence accordingly.
 
-\subsection*{4. Revised baseline comparison and crossover point}
+\subsection*{5. Revised baseline comparison and crossover point}
 
 With genuine replication the ordering of the baselines at $n = 1{,}158$
 changes: the MLP mean rises to $0.749$ and the shallow CNN falls to $0.690$,
@@ -130,7 +181,7 @@ and replaced it with the direct statement that PGSGv2 is superior in the
 small-sample regime and from $n \geq 400$, and comparable to or below PLS in
 the intermediate range. Figure~1(b) has been redrawn accordingly.
 
-\subsection*{5. Band-selection protocol}
+\subsection*{6. Band-selection protocol}
 
 Section~4.1 described the removal of all bands with zero variance in any of
 the five seasons (the ``union-of-zeroed-bands'' protocol), yielding
@@ -144,7 +195,7 @@ does, and we note in the text that a mask derived per split would not in
 general be constant across the grid, which is a requirement for the scale
 curve to be interpretable.
 
-\subsection*{6. Typographical corrections}
+\subsection*{7. Typographical corrections}
 
 Two citation commands lost their leading backslash and were typeset as
 literal text in the compiled PDF (\texttt{citegoodfellow2016} in the
@@ -157,7 +208,8 @@ corrected.
 
 \subsection*{Availability}
 
-The re-execution script, the raw per-seed outputs and the diagnostic that
-identified the degenerate replicates are available in the public repository
-accompanying this manuscript, alongside the original outputs, so that the
-correction can be audited in full.
+The re-execution scripts, the raw per-seed outputs, the extracted gate
+vectors for every point of the grid, and the diagnostic that identified the
+degenerate replicates are available in the public repository accompanying
+this manuscript, alongside the original outputs, so that the correction can
+be audited in full.
